@@ -7,6 +7,8 @@ import connectMongoDB from './config/db.js';
 import user from './routes/User.js'
 import errorMiddleware from './middlewares/errorMiddleware.js';
 import cookie from 'cookie-parser';
+import path, { resolve } from 'path';
+const __dirname = resolve();
 
 
 // Dot Env Initialize
@@ -20,7 +22,10 @@ app.use(cookie())
 app.use(cors())
 
 // Static Folder
-app.use('/public', express.static('/public'))
+app.use(express.static('build'))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
 
 // Routes
 app.use('/api/user', user)
